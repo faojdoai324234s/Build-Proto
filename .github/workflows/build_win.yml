@@ -17,17 +17,35 @@ jobs:
     - name: Install dependencies
       run: vcpkg install protobuf protobuf:x64-windows
       
-    - name: Generate C++ code
+    - name: Copy over the files
       shell: cmd
       run: |
         mkdir upload
-        dir C:\vcpkg /s
+        mkdir upload\bin
+        mkdir upload\include
+        mkdir upload\include\google
+        mkdir upload\lib
+        mkdir upload\share
+        copy /y /v C:\vcpkg\installed\x64-windows\tools\protobuf\protoc.exe upload\bin
+        xcopy /y /v /s /e C:\vcpkg\installed\x64-windows\include\google upload\include\google
+        copy /y /v C:\vcpkg\installed\x64-windows\lib\lib*.lib upload\lib
+        copy /y /v C:\vcpkg\installed\x64-windows\debug\lib\lib*.lib upload\lib
+        copy /y /v C:\vcpkg\installed\x64-windows\share\protobuf\*.* upload\share
       
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: Linux-artifact
         path: ${{github.workspace}}/upload
+        if-no-files-found: ignore
+        include-hidden-files: true
+        retention-days: 0
+        
+    - name: Upload package artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Package-artifact
+        path: C:\vcpkg\packages\protobuf_x64-windows
         if-no-files-found: ignore
         include-hidden-files: true
         retention-days: 0
