@@ -19,8 +19,8 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg
         cd vcpkg
-        git checkout 58aac5dacbe95290264695bb3f129305eeb66780 -- ports/protobuf
-        vcpkg install protobuf protobuf:x64-windows@3.21.12#4
+        git checkout 6245ce4 -- ports/protobuf
+        vcpkg install protobuf protobuf:x64-windows
       
     - name: Copy over the files
       shell: cmd
