@@ -17,6 +17,7 @@ jobs:
     - name: Install dependencies
       shell: cmd
       run: |
+        dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\"
         git clone https://github.com/microsoft/vcpkg
         cd vcpkg
         bootstrap-vcpkg.bat -disableMetrics
