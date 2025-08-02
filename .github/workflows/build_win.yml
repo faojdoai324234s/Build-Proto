@@ -31,7 +31,13 @@ jobs:
         copy /y /v C:\vcpkg\installed\x64-windows\lib\lib*.lib upload\lib
         copy /y /v C:\vcpkg\installed\x64-windows\debug\lib\lib*.lib upload\lib
         copy /y /v C:\vcpkg\installed\x64-windows\share\protobuf\*.* upload\share
-      
+
+    - name: Generate C++ files
+      shell: cmd
+      run: |
+        mkdir upload\cpp-files
+        C:\vcpkg\installed\x64-windows\tools\protobuf\protoc.exe --cpp_out=upload\cpp-files widevine_protocol.proto
+        
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
