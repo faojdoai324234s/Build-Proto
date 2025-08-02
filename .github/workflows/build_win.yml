@@ -24,7 +24,7 @@ jobs:
 
     - name: List all files
       shell: cmd
-      run: dir C:\vcpkg /s
+      run: dir ${{github.workspace}}\vcpkg /s
         
     - name: Copy over the files
       shell: cmd
