@@ -15,7 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install dependencies
+      shell: cmd
       run: |
+        git clone https://github.com/microsoft/vcpkg
+        cd vcpkg
         git checkout 58aac5dacbe95290264695bb3f129305eeb66780 -- ports/protobuf
         vcpkg install protobuf protobuf:x64-windows
       
