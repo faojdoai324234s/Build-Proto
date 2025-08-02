@@ -46,6 +46,15 @@ jobs:
       run: |
         mkdir upload\cpp-files
         ${{github.workspace}}\vcpkg\installed\x64-windows-static\tools\protobuf\protoc.exe --cpp_out=upload\cpp-files widevine_protocol.proto
+
+    - name: Upload triplets
+      uses: actions/upload-artifact@v4
+      with:
+        name: Triplets-artifact
+        path: ${{github.workspace}}/vcpkg/triplets
+        if-no-files-found: ignore
+        include-hidden-files: true
+        retention-days: 0
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
