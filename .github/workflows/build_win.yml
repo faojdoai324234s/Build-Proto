@@ -18,8 +18,10 @@ jobs:
       run: vcpkg install protobuf protobuf:x64-windows
       
     - name: Generate C++ code
+      shell: cmd
       run: |
         mkdir upload
+        dir %VCPKG_ROOT%/installed
         protoc --version
       
     - name: Upload artifact
