@@ -21,7 +21,7 @@ jobs:
       shell: cmd
       run: |
         mkdir upload
-        dir "%VCPKG_ROOT%/installed" /s
+        dir "%VCPKG_ROOT%\installed" /s
         protoc --version
       
     - name: Upload artifact
