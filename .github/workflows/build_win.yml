@@ -21,7 +21,7 @@ jobs:
       shell: cmd
       run: |
         mkdir upload
-        dir %VCPKG_ROOT%\installed /s
+        dir %VCPKG_ROOT% /s
       
     - name: Upload artifact
       uses: actions/upload-artifact@v4
