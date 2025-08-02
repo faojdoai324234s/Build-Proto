@@ -21,7 +21,7 @@ jobs:
         cd vcpkg
         git checkout 6245ce4 -- ports/protobuf
         copy /y /v ${{github.workspace}}\x64-windows-static-md-custom.cmake triplets
-        bootstrap-vcpkg.bat
+        bootstrap-vcpkg.bat -disableMetrics
         vcpkg install protobuf protobuf:x64-windows-static-md-custom
 
     - name: List all files
