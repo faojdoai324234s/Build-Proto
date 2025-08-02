@@ -21,7 +21,11 @@ jobs:
         cd vcpkg
         git checkout 6245ce4 -- ports/protobuf
         vcpkg install protobuf protobuf:x64-windows
-      
+
+    - name: List all files
+      shell: cmd
+      run: dir C:\vcpkg /s
+        
     - name: Copy over the files
       shell: cmd
       run: |
