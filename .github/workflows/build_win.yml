@@ -21,7 +21,7 @@ jobs:
       shell: cmd
       run: |
         mkdir upload
-        dir C:\vcpkg
+        dir C:\vcpkg /s
       
     - name: Upload artifact
       uses: actions/upload-artifact@v4
