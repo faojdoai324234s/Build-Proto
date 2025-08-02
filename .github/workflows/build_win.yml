@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  triplet: x64-windows-static-md-custom
+  
 jobs:
   build:
     runs-on: windows-2022
@@ -30,8 +33,8 @@ jobs:
         git clone https://github.com/microsoft/vcpkg
         cd vcpkg
         git checkout 6245ce4 -- ports/protobuf
-        copy /y /v ${{github.workspace}}\x64-windows-static-md-custom.cmake triplets
-        vcpkg install protobuf protobuf:x64-windows-static-md-custom
+        copy /y /v ${{github.workspace}}\${{ env.triplet }}.cmake triplets
+        vcpkg install protobuf protobuf:${{ env.triplet }}
 
     - name: List all files
       shell: cmd
@@ -46,17 +49,17 @@ jobs:
         mkdir upload\include\google
         mkdir upload\lib
         mkdir upload\share
-        copy /y /v ${{github.workspace}}\vcpkg\installed\x64-windows-static\tools\protobuf\protoc.exe upload\bin
-        xcopy /y /v /s /e ${{github.workspace}}\vcpkg\installed\x64-windows-static\include\google upload\include\google
-        copy /y /v ${{github.workspace}}\vcpkg\installed\x64-windows-static\lib\lib*.lib upload\lib
-        copy /y /v ${{github.workspace}}\vcpkg\installed\x64-windows-static\debug\lib\lib*.lib upload\lib
-        copy /y /v ${{github.workspace}}\vcpkg\installed\x64-windows-static\share\protobuf\*.* upload\share
+        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe upload\bin
+        xcopy /y /v /s /e ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\include\google upload\include\google
+        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\lib\lib*.lib upload\lib
+        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\debug\lib\lib*.lib upload\lib
+        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\share\protobuf\*.* upload\share
 
     - name: Generate C++ files
       shell: cmd
       run: |
         mkdir upload\cpp-files
-        ${{github.workspace}}\vcpkg\installed\x64-windows-static\tools\protobuf\protoc.exe --cpp_out=upload\cpp-files widevine_protocol.proto
+        ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=upload\cpp-files widevine_protocol.proto
 
     - name: Upload triplets
       uses: actions/upload-artifact@v4
@@ -80,7 +83,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Package-artifact
-        path: ${{github.workspace}}\vcpkg\packages\protobuf_x64-windows-static
+        path: ${{github.workspace}}\vcpkg\packages\protobuf_${{ env.triplet }}
         if-no-files-found: ignore
         include-hidden-files: true
         retention-days: 0
