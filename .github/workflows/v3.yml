@@ -26,7 +26,7 @@ jobs:
         --channelId VisualStudio.15.Release ^
         --add Microsoft.VisualStudio.Component.VC.v141.x86.x64
         
-    - name: Install dependencies
+    - name: Install Protobuf
       shell: cmd
       run: |
         git clone https://github.com/microsoft/vcpkg
@@ -35,10 +35,10 @@ jobs:
         copy /y /v ${{github.workspace}}\${{ env.triplet }}.cmake triplets
         vcpkg install protobuf protobuf:${{ env.triplet }}
 
-    - name: Generate C++ files
+    - name: Generate source files
       shell: cmd
       run: |
-        mkdir upload\cpp-files
+        mkdir "${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files"
         ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files widevine_protocol.proto
         
     - name: Upload artifact
