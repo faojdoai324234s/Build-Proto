@@ -35,36 +35,17 @@ jobs:
         copy /y /v ${{github.workspace}}\${{ env.triplet }}.cmake triplets
         vcpkg install protobuf protobuf:${{ env.triplet }}
 
-    - name: List all files
-      shell: cmd
-      run: dir ${{github.workspace}}\vcpkg
-        
-    - name: Copy over the files
-      shell: cmd
-      run: |
-        mkdir upload
-        mkdir upload\bin
-        mkdir upload\include
-        mkdir upload\include\google
-        mkdir upload\lib
-        mkdir upload\share
-        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe upload\bin
-        xcopy /y /v /s /e ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\include\google upload\include\google
-        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\lib\lib*.lib upload\lib
-        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\debug\lib\lib*.lib upload\lib
-        copy /y /v ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\share\protobuf\*.* upload\share
-
     - name: Generate C++ files
       shell: cmd
       run: |
         mkdir upload\cpp-files
-        ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=upload\cpp-files widevine_protocol.proto
+        ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files widevine_protocol.proto
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: Windows-artifact
-        path: ${{github.workspace}}/upload
+        path: ${{github.workspace}}/vcpkg/installed/${{ env.triplet }}
         if-no-files-found: ignore
         include-hidden-files: true
         retention-days: 0
