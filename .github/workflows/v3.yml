@@ -35,7 +35,7 @@ jobs:
       shell: cmd
       run: |
         mkdir "${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files"
-        ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files license_protocol.proto
+        ${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\tools\protobuf\protoc.exe --cpp_out=${{github.workspace}}\vcpkg\installed\${{ env.triplet }}\generated-files widevine_pssh_data.proto
         
     - name: Upload artifact
       uses: actions/upload-artifact@v4
